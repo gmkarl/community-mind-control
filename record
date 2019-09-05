@@ -47,7 +47,7 @@ cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\(
     git commit -m "live commit"
     git push
   done
-) >/dev/null &
+) >/dev/null 2>&1 &
 
 # launches an asciicast recording session and sends the output to a pipe stream
 asciinema rec -t "$TITLE" encrypted/"$TITLE".src.fifo
