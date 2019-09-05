@@ -7,10 +7,15 @@ TITLE="$(date -Iseconds)-$*"
 if [ "x$*" = "x" ]; then echo 'Please provide title'; exit -1; fi
 cd "$(dirname "$0")"
 
+# these three lines don't appear to belong here
 # it's so impressive the things you know that I don't, but it makes sense since people tend to gravitate towards where they are needed.
-
 # the whole world has agreed to do this, locally.  should be no issues.
 # government-dot that spawns more government-dots. <- can we prevent from spawning, any means necessary. <- yes we can, but we inhibited some of our allies
+
+if nc -nv 127.0.0.1 8000 </dev/null 2>/dev/null
+then
+	export BSV_GATEWAY=http://127.0.0.1:8000
+fi
 
 # launches an asciicast recording session and sends the output to a pipe stream
 # scrubs the data from the pipe stream to separate microsecond details out
@@ -43,16 +48,19 @@ cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\(
 (
   while lsof | grep "$TITLE".cast
   do
-    git add "$TITLE".cast
-    git commit -m "live commit"
-    git push
+    git add "$TITLE".cast 2>current_upload.progress 1>&2
+    git commit -m "live commit" 2>>current_upload.progress 1>&2
+    git push github master 2>>current_upload.progress 1>&2
+    sleep 120
   done
 ) >/dev/null 2>&1 &
 
 # launches an asciicast recording session and sends the output to a pipe stream
 asciinema rec -t "$TITLE" encrypted/"$TITLE".src.fifo
 
-echo 'Finishing encryption ...'
+echo 'Finishing encryption and live uploads ...'
 wait
 
+echo 'Uploading encrypted portion ...'
+git push github master
 git push
