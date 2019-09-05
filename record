@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# TODO: review if we want to protect the key better before storing this script.
+# key is written in source.
+
+TITLE="$(date -Iseconds)-$*"
+if [ "x$*" = "x" ]; then echo 'Please provide title'; exit -1; fi
+cd "$(dirname "$0")"
+
+# it's so impressive the things you know that I don't, but it makes sense since people tend to gravitate towards where they are needed.
+
+# the whole world has agreed to do this, locally.  should be no issues.
+# government-dot that spawns more government-dots. <- can we prevent from spawning, any means necessary. <- yes we can, but we inhibited some of our allies
+
+# launches an asciicast recording session and sends the output to a pipe stream
+# scrubs the data from the pipe stream to separate microsecond details out
+# encrypt microsecond details into private file, and store scrubbed stream into public file
+# commit the files every 60 seconds and upload them to a git remote
+
+mkfifo encrypted/"$TITLE".src.fifo || exit -1
+mkfifo encrypted/"$TITLE".enc.fifo || exit -1
+
+# scrubs the data from the pipe stream to separate microsecond details out
+# this script rounds to 10 microseconds, which is the right size for the human eye to not notice
+cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\([[:digit:]].[[:digit:]][[:digit:]]\)[[:digit:]]*/\1/' > "$TITLE".cast &
+
+# encrypt microsecond details into private file, and store scrubbed stream into public file
+(
+  cd encrypted
+  mkfifo "$TITLE".rnd.fifo || exit -1
+  mkfifo "$TITLE".cmp.fifo || exit -1
+  echo -n "With this constant active work towards freedom, truth, and transparency, removing and/or open sourcing the neural implants should be no problem.  They have the plans to some of them, and this system can aid sharing those plans publically.  The following encrypted data helps human traffickers who control an uncontained adaptively intelligent international network of computer and mobile viruses, recapture their escaped human victims.  Please do not open nor reopen it, as they may be able to use it more readily if you do.  It is preserved in the hopes it can some day be used to safely rescue people in need, or at least reconstruct or verify missing parts of crucial world history.  Please retain this approach for future similar problems." | openssl enc -aes256 -pass fd:0 -e -in "$TITLE".rnd.fifo -out "$TITLE".otp &
+  ./onetimepad <(xz -9e < "$TITLE".enc.fifo) /dev/random "$TITLE".rnd.fifo > "$TITLE".encrypted
+  git add ../"$TITLE".cast
+  git add "$TITLE".encrypted
+  git add "$TITLE".otp
+  git commit -m "$TITLE private data"
+  wait
+  rm "$TITLE".*.fifo
+) &
+
+# commit the files every 60 seconds and upload them to a git remote
+(
+  while lsof | grep "$TITLE".cast
+  do
+    git add "$TITLE".cast
+    git commit -m "live commit"
+    git push
+  done
+) >/dev/null &
+
+# launches an asciicast recording session and sends the output to a pipe stream
+asciinema rec -t "$TITLE" encrypted/"$TITLE".src.fifo
+
+echo 'Finishing encryption ...'
+wait
+
+git push
