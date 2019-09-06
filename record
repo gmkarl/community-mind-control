@@ -48,19 +48,20 @@ cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\(
 (
   while lsof | grep "$TITLE".cast
   do
-    git add "$TITLE".cast 2>current_upload.progress 1>&2
-    git commit -m "live commit" 2>>current_upload.progress 1>&2
-    git push github master 2>>current_upload.progress 1>&2
-    git push 2>>current_upload.progress 1>&2
+    git add "$TITLE".cast
+    git commit -m "live commit"
+    git push github master
+    git push
   done
-) >/dev/null 2>&1 &
+) 2>&1 | xz -ve9 > "logs/${TITLE}.livestorage.log.xz" &
 
 # launches an asciicast recording session and sends the output to a pipe stream
 asciinema rec -t "$TITLE" encrypted/"$TITLE".src.fifo
 
 echo 'Finishing encryption and live uploads ...'
+git add logs
 wait
 
-echo 'Uploading encrypted portion ...'
+echo 'Uploading encrypted portion and logs ...'
 git push github master
 git push
