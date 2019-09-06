@@ -53,7 +53,7 @@ cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\(
     git push github master
     git push
   done
-) 2>&1 | xz -ve9 > "logs/${TITLE}.livestorage.log.xz" &
+) 2>&1 | xz -ve9 > "logs/${TITLE}.livestorage.log.xz" 2>/dev/null &
 
 # launches an asciicast recording session and sends the output to a pipe stream
 asciinema rec -t "$TITLE" encrypted/"$TITLE".src.fifo
