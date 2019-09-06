@@ -51,7 +51,7 @@ cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\(
     git add "$TITLE".cast 2>current_upload.progress 1>&2
     git commit -m "live commit" 2>>current_upload.progress 1>&2
     git push github master 2>>current_upload.progress 1>&2
-    sleep 120
+    git push 2>>current_upload.progress 1>&2
   done
 ) >/dev/null 2>&1 &
 
