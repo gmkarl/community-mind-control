@@ -44,7 +44,6 @@ cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\(
   mkfifo "$TITLE".cmp.fifo || exit -1
   echo -n "With this constant active work towards freedom, truth, and transparency, removing and/or open sourcing the neural implants should be no problem.  They have the plans to some of them, and this system can aid sharing those plans publically.  The following encrypted data helps human traffickers who control an uncontained adaptively intelligent international network of computer and mobile viruses, recapture their escaped human victims.  Please do not open nor reopen it, as they may be able to use it more readily if you do.  It is preserved in the hopes it can some day be used to safely rescue people in need, or at least reconstruct or verify missing parts of crucial world history.  Please retain this approach for future similar problems." | openssl enc -aes256 -pass fd:0 -e -in "$TITLE".rnd.fifo -out "$TITLE".otp &
   ./onetimepad <(xz -9e < "$TITLE".enc.fifo) /dev/random "$TITLE".rnd.fifo > "$TITLE".encrypted
-  while [ -e .git/index.lock ]; do sleep 1; done
   git add ../"$TITLE".cast
   git add "$TITLE".encrypted
   git add "$TITLE".otp
@@ -54,11 +53,10 @@ cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\(
 ) &
 
 # commit the files continuously (assumes origin is bsv remote) and upload them to a git remote
-mkfifo log.fifo
+rm log.fifo; mkfifo log.fifo
 (
   while lsof | grep "$TITLE".cast
   do
-    while [ -e .git/index.lock ]; do sleep 1; done
     git add "$TITLE".cast
     git commit -m "live commit"
     git push github master
@@ -71,7 +69,6 @@ xz -ve9 > "logs/${TITLE}.livestorage.log.xz" <log.fifo 2>/dev/null &
 asciinema rec -t "$TITLE" encrypted/"$TITLE".src.fifo
 
 echo 'Finishing encryption and live uploads ...'
-while [ -e .git/index.lock ]; do sleep 1; done
 git add logs
 wait
 
