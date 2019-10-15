@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# TODO: review if we want to protect the key better before storing this script.
-# key is written in source.
-
 TITLE="$(date -Iseconds)-$*"
 if [ "x$*" = "x" ]; then echo 'Please provide title'; exit -1; fi
 cd "$(dirname "$0")"
@@ -12,9 +9,12 @@ cd "$(dirname "$0")"
 # the whole world has agreed to do this, locally.  should be no issues.
 # government-dot that spawns more government-dots. <- can we prevent from spawning, any means necessary. <- yes we can, but we inhibited some of our allies
 
-if nc -nv 127.0.0.1 8000 </dev/null 2>/dev/null
+if nc -Nnv 127.0.0.1 8000 </dev/null 2>/dev/null
 then
 	export BSV_GATEWAY=http://127.0.0.1:8000
+else
+	echo 'minigate not running, downloading from default.  if content gets cached may upload data multiple times to ensure is received.'
+	echo 'run minigate with `minigate -c false`'
 fi
 
 # launches an asciicast recording session and sends the output to a pipe stream
