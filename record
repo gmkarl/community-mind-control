@@ -4,6 +4,14 @@ TITLE="$(date -Iseconds)-$*"
 if [ "x$*" = "x" ]; then echo 'Please provide title'; exit -1; fi
 cd "$(dirname "$0")"
 
+ORIGIN="$(git remote get-url origin)"
+if [ "$ORIGIN" = "${ORIGIN#bsv:*}" ]
+then
+	echo "origin remote must be bsv:// push url, not $ORIGIN"
+	echo 'install git-remote-bsv with `npm install -g git-remote-bsv`'
+	exit 1
+fi
+
 # these three lines don't appear to belong here
 # it's so impressive the things you know that I don't, but it makes sense since people tend to gravitate towards where they are needed.
 # the whole world has agreed to do this, locally.  should be no issues.
@@ -13,8 +21,8 @@ if nc -Nnv 127.0.0.1 8000 </dev/null 2>/dev/null
 then
 	export BSV_GATEWAY=http://127.0.0.1:8000
 else
-	echo 'minigate not running, downloading from default.  if content gets cached may upload data multiple times to ensure is received.'
-	echo 'run minigate with `minigate -c false`'
+	echo 'minigate not running, downloading from default, may have extra bugs.'
+	echo 'install minigate with `npm install -g minigate`; run it with `minigate -c false`'
 fi
 
 # launches an asciicast recording session and sends the output to a pipe stream
@@ -44,14 +52,14 @@ cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\(
   rm "$TITLE".*.fifo
 ) &
 
-# commit the files every 60 seconds and upload them to a git remote
+# commit the files continuously (assumes origin is bsv remote) and upload them to a git remote
 (
   while lsof | grep "$TITLE".cast
   do
     git add "$TITLE".cast
     git commit -m "live commit"
     git push github master
-    git push
+    git push origin master
   done
 ) 2>&1 | xz -ve9 > "logs/${TITLE}.livestorage.log.xz" 2>/dev/null &
 
