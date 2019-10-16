@@ -74,4 +74,4 @@ wait
 
 echo 'Uploading encrypted portion and logs ...'
 git push github master
-git push
+git push origin master
