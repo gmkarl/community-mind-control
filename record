@@ -4,7 +4,7 @@ TITLE="$(date -Iseconds)-$*"
 if [ "x$*" = "x" ]; then echo 'Please provide title'; exit -1; fi
 cd "$(dirname "$0")"
 
-ORIGIN="$(git remote get-url origin)"
+ORIGIN="$(git config --get remote.origin.url)"
 if [ "$ORIGIN" = "${ORIGIN#bsv:*}" ]
 then
 	echo "origin remote must be bsv:// push url, not $ORIGIN"
@@ -17,7 +17,7 @@ fi
 # the whole world has agreed to do this, locally.  should be no issues.
 # government-dot that spawns more government-dots. <- can we prevent from spawning, any means necessary. <- yes we can, but we inhibited some of our allies
 
-if nc -Nnv 127.0.0.1 8000 </dev/null 2>/dev/null
+if nc -znv 127.0.0.1 8000 2>/dev/null
 then
 	export BSV_GATEWAY=http://127.0.0.1:8000
 else
