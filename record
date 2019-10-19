@@ -69,7 +69,6 @@ cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\(
 asciinema rec -t "$TITLE" encrypted/"$TITLE".src.fifo
 
 echo 'Finishing encryption and live uploads ...'
-git add logs
 wait
 
 echo 'Uploading encrypted portion and logs ...'
