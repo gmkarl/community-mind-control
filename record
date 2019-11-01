@@ -25,7 +25,8 @@ else
 	echo 'install minigate with `npm install -g minigate`; run it with `minigate -c false`'
 fi
 
-git pull origin
+git pull origin master
+git pull github master
 
 # launches an asciicast recording session and sends the output to a pipe stream
 # scrubs the data from the pipe stream to separate microsecond details out
