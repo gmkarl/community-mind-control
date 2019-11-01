@@ -62,8 +62,8 @@ cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\(
     git add "$TITLE".cast
     git commit -m "live commit"
     git push github master
-    #git push origin master
-    sleep $((60*10))
+    git push origin master
+    #sleep $((60*10))
   done
 ) 2>&1 | tee log.tmp.txt | xz -ve9 > "logs/${TITLE}.livestorage.log.xz" 2>/dev/null &
 
@@ -75,4 +75,4 @@ wait
 
 echo 'Uploading encrypted portion and logs ...'
 git push github master
-#git push origin master
+git push origin master
