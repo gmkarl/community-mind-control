@@ -32,7 +32,7 @@ then
 	export BSV_GATEWAY=http://127.0.0.1:8000
 else
 	echo 'minigate not running, downloading from default, may have extra bugs.'
-	echo 'install minigate with `npm install -g minigate`; run it with `minigate -c false`'
+	echo 'install minigate with `npm install -g minigate` and just run it with `minigate`'
 fi
 
 git pull origin master
@@ -47,8 +47,40 @@ mkfifo encrypted/"$TITLE".src.fifo || exit -1
 mkfifo encrypted/"$TITLE".enc.fifo || exit -1
 
 # scrubs the data from the pipe stream to separate microsecond details out
-# this script rounds to 10 microseconds, which is the right size for the human eye to not notice
+# this script rounds to 10 milliseconds, which is the right size for the human eye to not notice
 cat encrypted/"$TITLE".src.fifo | tee encrypted/"$TITLE".enc.fifo | sed -u 's/\([[:digit:]].[[:digit:]][[:digit:]]\)[[:digit:]]*/\1/' > "$TITLE".cast &
+mainwritepid=$!
+
+# track price
+(
+	mwp=/proc/$mainwritepid/fdinfo/1
+	lastmwp=0
+	startmwptime=$(date +%s)
+	lastmwptime=$startmwptime
+  	while lsof | grep -q "$TITLE".cast
+	do
+		sleep 5
+		nextmwptime=$(date +%s)
+		nextmwp=$(cut -f 2 $mwp | head -n 1)
+		diffmwp=$((nextmwp - lastmwp))
+		diffmwptime=$((nextmwptime - lastmwptime))
+		totmwptime=$((nextmwptime - startmwptime))
+		{
+			BSVPRICE=200
+			BYTE_TO_SATDOLDAY=$((60*60*24*2*BSVPRICE))
+			echo Assuming \$${BSVPRICE}BSV
+			echo Accumulated price: \$$((nextmwp*2*BSVPRICE / 100000000))
+			echo Current rate: \$$((diffmwp*BYTE_TO_SATDOLDAY / 100000000 / diffmwptime))/day over ${diffmwptime}s
+			echo Avg rate: \$$((nextmwp*BYTE_TO_SATDOLDAY / 100000000 / totmwptime))/day over ${totmwptime}s
+			echo nextmwp=$nextmwp lastmwp=$lastmwp
+			echo nextmwptime=$nextmwptime lastmwptime=$lastmwptime startmwptime=$startmwptime
+		} > curprice.txt
+		lastmwp=$nextmwp
+		lastmwptime=$nextmwptime
+	done
+)&
+
+
 
 # encrypt microsecond details into private file, and store scrubbed stream into public file
 (
