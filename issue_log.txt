@@ -1,4 +1,11 @@
-2019-11-07 5:00a ET
+2019-11-07 09:35 ET
+	some frustrating issues going on.
+	- 1. sometimes upload is stuck in loop of 'missing inputs', maybe server drops a tx
+	- 2. large sized uploads generated when reuploading after a large upload.  next one should be small.
+	- 3. bsvup still crashing sometimes when inside git-remote-bsv
+	blockchain repo is likely in an invalid state because of #1.  working on a workaround.
+
+2019-11-07 05:00a ET
 	started logging issues.
 	tried to record today but ran into three or 4 issues.
 	1. local bsv repo folder became empty for some reason.
@@ -9,6 +16,8 @@
 		i thought I fixed that already.
 	5. ./record is leaving processes open in the background after termination.  this is source of many bugs.
 		=> COULD NOT REPRODUCE.  Maybe was a result of git errors.
+	6. after forcefully terminating a session, future recordings are all terminating upload early, before errors are resolved.
+		this appears to be a crash in node between codelines aggravated by working with very long strings
 
 	- [X] update git on this system to prevent #3 in the future
 		-> this didn't fix it.
@@ -24,3 +33,5 @@
 		fix is in git-remote-bsv 1.4.8
 	- [X] debug #5
 		could-not-reproduce
+	- [ ] debug #6
+	- [ ] change keys: putting the private key in the log means an attacker can hide the contents from casual review
