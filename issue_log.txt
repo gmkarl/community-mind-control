@@ -5,6 +5,8 @@
 		   the tx is successfully in the blockchain.
 		-> I have coded a workaround for this.
 	- 2. large sized uploads generated when reuploading after a large upload.  next one should be small.
+		-> this appears to be from legitimate data generated.  need to make a display
+		   of how much price the activity is generating.  could compress if desired.
 	- 3. bsvup still crashing often when inside git-remote-bsv; apparently deep inside node
 
 2019-11-07 05:00a ET
