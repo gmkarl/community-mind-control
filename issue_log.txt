@@ -1,0 +1,15 @@
+2019-11-07 5:00a ET
+	started logging issues.
+	tried to record today but ran into three or 4 issues.
+	1. local bsv repo folder became empty for some reason.
+	2. fetching from bsv to refill was unreliable
+	3. the version of git on my system didn't like the contents of the repo
+			^-- this is probably because I uploaded from Windows Ubuntu, likely has newer git.
+	4. apparent packfile error: the upload is said to cost 44m satoshis, which is far too much.
+		i thought I fixed that already.
+
+	- [X] update git on this system to prevent #3 in the future
+		-> this didn't fix it.
+		I'll debug.
+	- [ ] #3 is not properly diagnosed, and may have caused #2.  debug the git clone failures.
+	- [ ] debug #4
