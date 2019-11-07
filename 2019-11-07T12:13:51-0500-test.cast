@@ -23,3 +23,8 @@
 [9.25, "o", "Avg rate: $32/day over 16s"]
 [9.25, "o", "\r\n"]
 [9.27, "o", "\u001b]777;notify;Command completed;cat curprice.txt \u0007\u001b]0;user@localhost:~/src/community\u0007\u001b]7;file://localhost.localdomain/home/user/src/community\u0007[user@0c-54-15-b7-f8-c7 community]$ "]
+[11.87, "o", "e"]
+[12.09, "o", "x"]
+[12.23, "o", "i"]
+[12.38, "o", "t"]
+[13.78, "o", "\r\nexit\r\n"]
