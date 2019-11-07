@@ -12,4 +12,8 @@
 		-> this didn't fix it.
 		I'll debug.
 	- [ ] #3 is not properly diagnosed, and may have caused #2.  debug the git clone failures.
+		I'm getting 'no such file or directory' when git is trying to write some of the files inside the .git/bsv folder.
+		I tried shortening up the length of some of the path component names, and that strangely fixed it on the commandline, but it still fails inside the process.
 	- [ ] debug #4
+
+PLEASE RECORD FUTURE DEBUGGING EFFORTS.  I think it will help.
