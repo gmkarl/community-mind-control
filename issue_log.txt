@@ -8,6 +8,7 @@
 	4. apparent packfile error: the upload is said to cost 44m satoshis, which is far too much.
 		i thought I fixed that already.
 	5. ./record is leaving processes open in the background after termination.  this is source of many bugs.
+		=> COULD NOT REPRODUCE.  Maybe was a result of git errors.
 
 	- [X] update git on this system to prevent #3 in the future
 		-> this didn't fix it.
@@ -21,3 +22,5 @@
 		looks like git is gc'ing on receive, need to make sure gc.auto=0 is set on repos cloned from before it was a thing, before they are received to.
 		this appears to have fixed #4
 		fix is in git-remote-bsv 1.4.8
+	- [X] debug #5
+		could-not-reproduce
