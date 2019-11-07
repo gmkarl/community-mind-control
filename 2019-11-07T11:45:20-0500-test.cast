@@ -1,0 +1,9 @@
+{"version": 2, "width": 94, "height": 47, "timestamp": 1573, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}, "title": "2019-11-07T11:45:20-0500-test"}
+[0.21, "o", "\u001b]777;notify;Command completed;exit\u0007\u001b]0;user@localhost:~/src/community\u0007\u001b]7;file://localhost.localdomain/home/user/src/community\u0007\u001b[?1034h[user@0c-54-15-b7-f8-c7 community]$ "]
+[1.91, "o", "^C\r\n"]
+[1.92, "o", "\u001b]777;notify;Command completed;exit\u0007\u001b]0;user@localhost:~/src/community\u0007\u001b]7;file://localhost.localdomain/home/user/src/community\u0007[user@0c-54-15-b7-f8-c7 community]$ "]
+[3.61, "o", "e"]
+[3.77, "o", "x"]
+[3.91, "o", "i"]
+[3.98, "o", "t"]
+[4.15, "o", "\r\nexit\r\n"]
