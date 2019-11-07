@@ -1,9 +1,11 @@
 2019-11-07 09:35 ET
 	some frustrating issues going on.
 	- 1. sometimes upload is stuck in loop of 'missing inputs', maybe server drops a tx
+		-> it looks like insight sometimes falsely can say 'missing inputs' when
+		   the tx is successfully in the blockchain.
+		-> I have coded a workaround for this.
 	- 2. large sized uploads generated when reuploading after a large upload.  next one should be small.
-	- 3. bsvup still crashing sometimes when inside git-remote-bsv
-	blockchain repo is likely in an invalid state because of #1.  working on a workaround.
+	- 3. bsvup still crashing often when inside git-remote-bsv; apparently deep inside node
 
 2019-11-07 05:00a ET
 	started logging issues.
